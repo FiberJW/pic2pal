@@ -1,6 +1,12 @@
 import * as React from "react";
 import { useEffect, Children, cloneElement, useState } from "react";
-import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  Linking,
+} from "react-native";
 import { useMachine } from "@xstate/react";
 import * as Font from "expo-font";
 import { black, white } from "./colors";
@@ -10,7 +16,9 @@ import PrimaryButton from "./components/PrimaryButton";
 import { FirstChildGetsNoSpecialTreatment } from "./components/helpers";
 import { useScalableSize } from "./typography";
 
-function Mobile() {
+export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
   const [current, send] = useMachine(appMachine);
 
   const rem0_75 = useScalableSize(0.75);
@@ -18,7 +26,24 @@ function Mobile() {
   const rem1_5 = useScalableSize(1.5);
   const rem2 = useScalableSize(2);
 
-  return (
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        "manrope-thin": require("./assets/fonts/manrope/fonts/ttf/manrope-thin.ttf"),
+        "manrope-light": require("./assets/fonts/manrope/fonts/ttf/manrope-light.ttf"),
+        "manrope-regular": require("./assets/fonts/manrope/fonts/ttf/manrope-regular.ttf"),
+        "manrope-medium": require("./assets/fonts/manrope/fonts/ttf/manrope-medium.ttf"),
+        "manrope-semibold": require("./assets/fonts/manrope/fonts/ttf/manrope-semibold.ttf"),
+        "manrope-bold": require("./assets/fonts/manrope/fonts/ttf/manrope-bold.ttf"),
+        "manrope-extrabold": require("./assets/fonts/manrope/fonts/ttf/manrope-extrabold.ttf"),
+      });
+      setFontsLoaded(true);
+    }
+
+    loadFonts();
+  }, []);
+
+  return fontsLoaded ? (
     <View style={{ flex: 1, backgroundColor: black }}>
       <View
         style={{
@@ -178,29 +203,42 @@ function Mobile() {
           />
         ) : null}
       </View>
+      <View
+        style={{
+          width: "100%",
+          backgroundColor: white,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 24,
+        }}
+      >
+        <Text
+          style={{ fontFamily: "manrope-thin", fontSize: rem1, color: black }}
+        >
+          Made with 🍵 and{" "}
+          <Text
+            accessibilityRole="link"
+            target="_blank"
+            href="https://github.com/expo/web-examples/"
+            style={{ textDecorationLine: "underline" }}
+          >
+            Expo for Web
+          </Text>
+        </Text>
+        <Text
+          accessibilityRole="link"
+          target="_blank"
+          href="https:fiberjw.com"
+          style={{
+            fontFamily: "manrope-thin",
+            fontSize: rem1,
+            color: black,
+            textDecorationLine: "underline",
+          }}
+        >
+          FiberJW.com
+        </Text>
+      </View>
     </View>
-  );
-}
-
-export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
-  useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        "manrope-thin": require("./assets/fonts/manrope/fonts/ttf/manrope-thin.ttf"),
-        "manrope-light": require("./assets/fonts/manrope/fonts/ttf/manrope-light.ttf"),
-        "manrope-regular": require("./assets/fonts/manrope/fonts/ttf/manrope-regular.ttf"),
-        "manrope-medium": require("./assets/fonts/manrope/fonts/ttf/manrope-medium.ttf"),
-        "manrope-semibold": require("./assets/fonts/manrope/fonts/ttf/manrope-semibold.ttf"),
-        "manrope-bold": require("./assets/fonts/manrope/fonts/ttf/manrope-bold.ttf"),
-        "manrope-extrabold": require("./assets/fonts/manrope/fonts/ttf/manrope-extrabold.ttf"),
-      });
-      setFontsLoaded(true);
-    }
-
-    loadFonts();
-  }, []);
-
-  return fontsLoaded ? <Mobile /> : null;
+  ) : null;
 }
