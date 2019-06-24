@@ -15,7 +15,7 @@ import { Machine, assign, send } from "xstate";
 import * as Vibrant from "node-vibrant";
 
 const STATES = {
-  selection: "selection",
+  initial: "initial",
   processing: "processing",
   complete: "complete",
 };
@@ -36,9 +36,9 @@ const appMachine = Machine({
   context: {
     palette: null,
   },
-  initial: STATES.selection,
+  initial: STATES.initial,
   states: {
-    [STATES.selection]: {
+    [STATES.initial]: {
       on: {
         [TRIGGERS.SELECTED_IMAGE]: {
           target: STATES.processing,
@@ -48,7 +48,7 @@ const appMachine = Machine({
     [STATES.processing]: {
       on: {
         [TRIGGERS.COMPLETE_PROCESSING]: STATES.complete,
-        [TRIGGERS.CANCEL_IMAGE_SELECTION]: STATES.selection,
+        [TRIGGERS.CANCEL_IMAGE_SELECTION]: STATES.initial,
       },
       invoke: {
         id: "selectAndProcessImage",
@@ -56,6 +56,8 @@ const appMachine = Machine({
           const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
           });
+
+          if (result.cancelled) throw new Error("Cancelled image selection");
 
           const palette = await Vibrant.from(result.uri).getPalette();
 
@@ -68,7 +70,8 @@ const appMachine = Machine({
           }),
         },
         onError: {
-          target: STATES.selection,
+          target: STATES.initial,
+          actions: (context, event) => console.log(event),
         },
       },
     },
@@ -116,8 +119,8 @@ export default function App() {
           style={{
             fontFamily: "manrope-extrabold",
             color: "black",
-            fontSize: "1.5rem",
-            lineHeight: "2rem",
+            fontSize: 24,
+            lineHeight: 32,
           }}
         >
           PIC2PAL
@@ -128,8 +131,8 @@ export default function App() {
           style={{
             fontFamily: "manrope-bold",
             color: white,
-            fontSize: "1.5rem",
-            lineHeight: "2rem",
+            fontSize: 24,
+            lineHeight: 32,
           }}
         >
           {"A picture\nfor a palette.".toUpperCase()}
@@ -138,8 +141,8 @@ export default function App() {
           style={{
             fontFamily: "manrope-regular",
             color: white,
-            fontSize: "1rem",
-            lineHeight: "1.5rem",
+            fontSize: 16,
+            lineHeight: 24,
             marginTop: 8,
           }}
         >
@@ -163,16 +166,15 @@ export default function App() {
               borderColor: white,
             }}
           >
-            {current.matches(STATES.selection) ? (
+            {current.matches(STATES.initial) ? (
               <Text
                 style={{
                   fontFamily: "manrope-medium",
                   color: white,
-                  fontSize: "1rem",
-                  lineHeight: "1rem",
+                  fontSize: 16,
                 }}
               >
-                TAKE OR CHOOSE A PICTURE
+                CHOOSE A PICTURE
               </Text>
             ) : null}
             {current.matches(STATES.processing) ? (
@@ -187,8 +189,8 @@ export default function App() {
                     fontFamily: "manrope-thin",
                     color: white,
                     textAlign: "center",
-                    fontSize: ".75rem",
-                    lineHeight: "1rem",
+                    fontSize: 12,
+                    lineHeight: 16,
                     marginHorizontal: 24,
                     marginTop: 24,
                   }}
@@ -209,7 +211,6 @@ export default function App() {
               flexDirection: "row",
               justifyContent: "space-between",
               marginBottom: 8,
-
               marginTop: 24,
             }}
           >
@@ -217,8 +218,8 @@ export default function App() {
               style={{
                 fontFamily: "manrope-extrabold",
                 color: white,
-                fontSize: ".75rem",
-                lineHeight: ".75rem",
+                fontSize: 12,
+                lineHeight: 12,
                 letterSpacing: "5%",
               }}
             >
