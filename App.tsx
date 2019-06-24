@@ -1,40 +1,19 @@
 import * as React from "react";
 import { useEffect, Children, cloneElement, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useMachine } from "@xstate/react";
 import * as Font from "expo-font";
 import { black, white } from "./colors";
 import { appMachine, STATES, TRIGGERS, ACTIONS } from "./state";
+import Color from "./components/Color";
+import PrimaryButton from "./components/PrimaryButton";
+import { FirstChildGetsNoSpecialTreatment } from "./components/helpers";
 
-export default function App() {
+function Mobile() {
   const [current, send] = useMachine(appMachine);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        "manrope-thin": require("./assets/fonts/manrope/fonts/ttf/manrope-thin.ttf"),
-        "manrope-light": require("./assets/fonts/manrope/fonts/ttf/manrope-light.ttf"),
-        "manrope-regular": require("./assets/fonts/manrope/fonts/ttf/manrope-regular.ttf"),
-        "manrope-medium": require("./assets/fonts/manrope/fonts/ttf/manrope-medium.ttf"),
-        "manrope-semibold": require("./assets/fonts/manrope/fonts/ttf/manrope-semibold.ttf"),
-        "manrope-bold": require("./assets/fonts/manrope/fonts/ttf/manrope-bold.ttf"),
-        "manrope-extrabold": require("./assets/fonts/manrope/fonts/ttf/manrope-extrabold.ttf"),
-      });
-      setFontsLoaded(true);
-    }
-
-    loadFonts();
-  }, []);
-
-  return fontsLoaded ? (
-    <View style={styles.container}>
+  return (
+    <View style={{ flex: 1, backgroundColor: black }}>
       <View
         style={{
           backgroundColor: white,
@@ -181,111 +160,41 @@ export default function App() {
           </View>
         ) : null}
         {current.matches(STATES.processing) ? (
-          <TouchableOpacity
+          <PrimaryButton
             onPress={() => send(TRIGGERS.CANCEL_IMAGE_SELECTION)}
-            style={{
-              padding: 16,
-              marginTop: 24,
-              width: "100%",
-              backgroundColor: "rgba(255, 255,255, 0.2)",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "manrope-semibold",
-                color: white,
-                fontSize: 16,
-                textAlign: "center",
-                lineHeight: 16,
-              }}
-            >
-              CANCEL UPLOAD
-            </Text>
-          </TouchableOpacity>
+            label="CANCEL UPLOAD"
+          />
         ) : null}
         {current.matches(STATES.complete) ? (
-          <TouchableOpacity
+          <PrimaryButton
             onPress={() => send(TRIGGERS.SELECT_ANOTHER_IMAGE)}
-            style={{
-              padding: 16,
-              marginTop: 24,
-              width: "100%",
-              backgroundColor: "rgba(255, 255,255, 0.2)",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "manrope-semibold",
-                color: white,
-                fontSize: 16,
-                textAlign: "center",
-                lineHeight: 16,
-              }}
-            >
-              CHOOSE ANOTHER PICTURE
-            </Text>
-          </TouchableOpacity>
+            label="CHOOSE ANOTHER PICTURE"
+          />
         ) : null}
-      </View>
-    </View>
-  ) : null;
-}
-
-function Color({ style, value }) {
-  return (
-    <View
-      style={[
-        {
-          flex: 1,
-          backgroundColor: value,
-          alignItems: "center",
-        },
-        style,
-      ]}
-    >
-      <View
-        style={{
-          backgroundColor: black,
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 8,
-          width: "30%",
-        }}
-      >
-        <Text
-          style={{
-            color: white,
-            textAlign: "center",
-            fontFamily: "manrope-semibold",
-            fontSize: 12,
-            lineHeight: 12,
-          }}
-        >
-          {value.toUpperCase()}
-        </Text>
       </View>
     </View>
   );
 }
 
-const FirstChildGetsNoSpecialTreatment = ({ children, injectedStyle }) =>
-  Children.map(children, (child, i) => {
-    if (i !== 0) {
-      const style = { ...(child.props.style || {}), ...injectedStyle };
+export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-      return cloneElement(child, { style });
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        "manrope-thin": require("./assets/fonts/manrope/fonts/ttf/manrope-thin.ttf"),
+        "manrope-light": require("./assets/fonts/manrope/fonts/ttf/manrope-light.ttf"),
+        "manrope-regular": require("./assets/fonts/manrope/fonts/ttf/manrope-regular.ttf"),
+        "manrope-medium": require("./assets/fonts/manrope/fonts/ttf/manrope-medium.ttf"),
+        "manrope-semibold": require("./assets/fonts/manrope/fonts/ttf/manrope-semibold.ttf"),
+        "manrope-bold": require("./assets/fonts/manrope/fonts/ttf/manrope-bold.ttf"),
+        "manrope-extrabold": require("./assets/fonts/manrope/fonts/ttf/manrope-extrabold.ttf"),
+      });
+      setFontsLoaded(true);
     }
 
-    return child;
-  });
+    loadFonts();
+  }, []);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: black,
-  },
-});
+  return fontsLoaded ? <Mobile /> : null;
+}
