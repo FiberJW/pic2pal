@@ -8,9 +8,15 @@ import { appMachine, STATES, TRIGGERS, ACTIONS } from "./state";
 import Color from "./components/Color";
 import PrimaryButton from "./components/PrimaryButton";
 import { FirstChildGetsNoSpecialTreatment } from "./components/helpers";
+import { useScalableSize } from "./typography";
 
 function Mobile() {
   const [current, send] = useMachine(appMachine);
+
+  const rem0_75 = useScalableSize(0.75);
+  const rem1 = useScalableSize(1);
+  const rem1_5 = useScalableSize(1.5);
+  const rem2 = useScalableSize(2);
 
   return (
     <View style={{ flex: 1, backgroundColor: black }}>
@@ -27,8 +33,8 @@ function Mobile() {
           style={{
             fontFamily: "manrope-extrabold",
             color: "black",
-            fontSize: 24,
-            lineHeight: 32,
+            fontSize: rem1_5,
+            lineHeight: rem2,
           }}
         >
           PIC2PAL
@@ -39,8 +45,8 @@ function Mobile() {
           style={{
             fontFamily: "manrope-bold",
             color: white,
-            fontSize: 24,
-            lineHeight: 32,
+            fontSize: rem1_5,
+            lineHeight: rem2,
           }}
         >
           {"A picture\nfor a palette.".toUpperCase()}
@@ -49,8 +55,8 @@ function Mobile() {
           style={{
             fontFamily: "manrope-regular",
             color: white,
-            fontSize: 16,
-            lineHeight: 24,
+            fontSize: rem1,
+            lineHeight: rem1_5,
             marginTop: 8,
           }}
         >
@@ -79,7 +85,7 @@ function Mobile() {
                 style={{
                   fontFamily: "manrope-medium",
                   color: white,
-                  fontSize: 16,
+                  fontSize: rem1,
                 }}
               >
                 CHOOSE A PICTURE
@@ -97,8 +103,8 @@ function Mobile() {
                     fontFamily: "manrope-thin",
                     color: white,
                     textAlign: "center",
-                    fontSize: 12,
-                    lineHeight: 16,
+                    fontSize: rem0_75,
+                    lineHeight: rem1,
                     marginHorizontal: 24,
                     marginTop: 24,
                   }}
@@ -126,8 +132,8 @@ function Mobile() {
               style={{
                 fontFamily: "manrope-extrabold",
                 color: white,
-                fontSize: 12,
-                lineHeight: 12,
+                fontSize: rem0_75,
+                lineHeight: rem0_75,
                 letterSpacing: "5%",
               }}
             >

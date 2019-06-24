@@ -1,8 +1,11 @@
 import * as React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { white20, white } from "../colors";
+import { useScalableSize } from "../typography";
 
 export default function PrimaryButton({ onPress, label }) {
+  const rem1 = useScalableSize(1);
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -19,9 +22,9 @@ export default function PrimaryButton({ onPress, label }) {
         style={{
           fontFamily: "manrope-semibold",
           color: white,
-          fontSize: 16,
+          fontSize: rem1,
           textAlign: "center",
-          lineHeight: 16,
+          lineHeight: rem1,
         }}
       >
         {label}
