@@ -230,10 +230,9 @@ export default function App() {
           target="_blank"
           href="https:fiberjw.com"
           style={{
-            fontFamily: "manrope-thin",
+            fontFamily: "manrope-semibold",
             fontSize: rem1,
             color: black,
-            textDecorationLine: "underline",
           }}
         >
           FiberJW.com
