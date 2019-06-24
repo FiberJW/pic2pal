@@ -1,0 +1,3 @@
+[submodule "assets/fonts/manrope"]
+	path = assets/fonts/manrope
+	url = git@github.com:sharanda/manrope.git
