@@ -4,25 +4,21 @@
     "slug": "pic2pal",
     "privacy": "public",
     "sdkVersion": "33.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "1.0.0",
+    "description": "Create color palettes from real-world images with Expo Web.",
+    "githubUrl": "https://github.com/FiberJW/pic2pal/",
+    "platforms": ["ios", "android", "web"],
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#110E0F"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }
