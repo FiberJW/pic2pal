@@ -213,7 +213,11 @@ export default function App() {
         }}
       >
         <Text
-          style={{ fontFamily: "manrope-thin", fontSize: rem1, color: black }}
+          style={{
+            fontFamily: "manrope-thin",
+            fontSize: rem0_75,
+            color: black,
+          }}
         >
           Made with 🍵 and{" "}
           <Text
@@ -231,7 +235,7 @@ export default function App() {
           href="https:fiberjw.com"
           style={{
             fontFamily: "manrope-semibold",
-            fontSize: rem1,
+            fontSize: rem0_75,
             color: black,
           }}
         >
