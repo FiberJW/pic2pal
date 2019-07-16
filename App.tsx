@@ -232,7 +232,7 @@ export default function App() {
         <Text
           accessibilityRole="link"
           target="_blank"
-          href="https:fiberjw.com"
+          href="https://fiberjw.com"
           style={{
             fontFamily: "manrope-semibold",
             fontSize: rem0_75,
